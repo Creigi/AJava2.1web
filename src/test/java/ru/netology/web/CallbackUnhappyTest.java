@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CallbackUnhappyTest {
     private WebDriver driver;
@@ -45,7 +46,8 @@ public class CallbackUnhappyTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79270000000");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector(".button__text")).click();
-        String text = form.findElement(By.cssSelector("[data-test-id=name] .input__sub")).getText();
+        String text = form.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub")).getText();
+
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
     }
 
@@ -57,7 +59,8 @@ public class CallbackUnhappyTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79270000000");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector(".button__text")).click();
-        String text = form.findElement(By.cssSelector("[data-test-id=name] .input__sub")).getText();
+        String text = form.findElement(By.cssSelector("[data-test-id=name].input_invalid .input__sub")).getText();
+
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.", text.trim());
     }
 
@@ -69,7 +72,8 @@ public class CallbackUnhappyTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79270000000");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector(".button__text")).click();
-        String text = form.findElement(By.cssSelector("[data-test-id=name] .input__sub")).getText();
+        String text = form.findElement(By.cssSelector("[data-test-id=name].input_invalid .input__sub")).getText();
+
         assertEquals("Поле обязательно для заполнения", text.trim());
     }
 
@@ -81,7 +85,8 @@ public class CallbackUnhappyTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector(".button__text")).click();
-        String text = form.findElement(By.cssSelector("[data-test-id=phone] .input__sub")).getText();
+        String text = form.findElement(By.cssSelector("[data-test-id=phone].input_invalid .input__sub")).getText();
+
         assertEquals("Поле обязательно для заполнения", text.trim());
     }
 
@@ -93,7 +98,8 @@ public class CallbackUnhappyTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+792700000009");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector(".button__text")).click();
-        String text = form.findElement(By.cssSelector(".input_invalid .input__sub")).getText();
+        String text = form.findElement(By.cssSelector("[data-test-id=phone].input_invalid .input__sub")).getText();
+
         assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", text.trim());
     }
 
@@ -105,7 +111,8 @@ public class CallbackUnhappyTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+7927000000");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector(".button__text")).click();
-        String text = form.findElement(By.cssSelector(".input_invalid .input__sub")).getText();
+        String text = form.findElement(By.cssSelector("[data-test-id=phone].input_invalid .input__sub")).getText();
+
         assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", text.trim());
     }
 
@@ -117,7 +124,8 @@ public class CallbackUnhappyTest {
         form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("7927000000");
         form.findElement(By.cssSelector("[data-test-id=agreement]")).click();
         form.findElement(By.cssSelector(".button__text")).click();
-        String text = form.findElement(By.cssSelector(".input_invalid .input__sub")).getText();
+        String text = form.findElement(By.cssSelector("[data-test-id=phone].input_invalid .input__sub")).getText();
+
         assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.", text.trim());
     }
 
@@ -126,10 +134,9 @@ public class CallbackUnhappyTest {
         driver.get("http://localhost:9999");
         WebElement form = driver.findElement(By.cssSelector("div#root"));
         form.findElement(By.cssSelector("[data-test-id=name] input")).sendKeys("Василий");
-        form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("7927000000");
-
+        form.findElement(By.cssSelector("[data-test-id=phone] input")).sendKeys("+79012345678");
         form.findElement(By.cssSelector(".button__text")).click();
-        String color = form.findElement(By.cssSelector(".input_invalid")).getCssValue("color");
-        assertEquals("rgba(255, 92, 92, 1)", color);
+
+        assertTrue(form.findElement(By.cssSelector("[data-test-id=agreement].input_invalid")).isEnabled());
     }
 }
